@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Narmitha V — Associate Software Developer</title>
+    <meta
+      name="description"
+      content="Narmitha V — Associate Software Developer at Nexzware Technologies. Building modern mobile apps, scalable web applications and digital experiences."
+    />
+    <meta name="theme-color" content="#f6f4fd" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f0d16" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content="Narmitha V — Associate Software Developer" />
+    <meta property="og:description" content="Building Modern Mobile Apps, Scalable Web Applications & Digital Experiences." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Apply saved / system theme before paint to avoid a flash -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
