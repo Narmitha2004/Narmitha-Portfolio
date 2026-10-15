@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin, Mail, MapPin, Briefcase, Smartphone, Code2, Sparkles } from 'lucide-react';
-import { profile } from '../data/portfolio';
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import { ArrowRight, Download, Github, Linkedin, MapPin } from 'lucide-react';
+import { highlights, profile } from '../data/portfolio';
 import MagneticButton from './ui/MagneticButton';
 import TechIcon from './ui/TechIcon';
-import { HeroShapes } from './FloatingShapes';
+import { useFinePointer } from '../hooks/useFinePointer';
 
 const ease = [0.22, 1, 0.36, 1];
 
-/** Types out the role once, then keeps a soft blinking caret. */
+/** Types out the role once, then keeps a blinking caret. */
 function TypedRole({ text }) {
   const reduce = useReducedMotion();
   const [shown, setShown] = useState(reduce ? text.length : 0);
@@ -25,8 +25,8 @@ function TypedRole({ text }) {
         i += 1;
         setShown(i);
         if (i >= text.length) clearInterval(id);
-      }, 55);
-    }, 900);
+      }, 50);
+    }, 700);
     return () => {
       clearTimeout(start);
       clearInterval(id);
@@ -34,106 +34,193 @@ function TypedRole({ text }) {
   }, [text, reduce]);
 
   return (
-    <span className="relative inline-block">
+    <span className="relative inline-flex items-center">
       <span className="sr-only">{text}</span>
       <span aria-hidden="true" className="text-gradient">
         {text.slice(0, shown)}
       </span>
-      <span
-        aria-hidden="true"
-        className="ml-1 inline-block h-[0.9em] w-[3px] translate-y-[0.12em] rounded-full bg-accent motion-safe:animate-pulse"
-      />
+      <span aria-hidden="true" className="ml-1 inline-block h-[1em] w-[3px] rounded-full bg-accent motion-safe:animate-pulse" />
     </span>
   );
 }
 
-function PhotoCard() {
-  const [ok, setOk] = useState(true);
+/** Cycles through the highlight words. */
+function Rotator({ words }) {
   const reduce = useReducedMotion();
-  const float = (d = 0, y = 10) =>
-    reduce ? {} : { animate: { y: [0, -y, 0] }, transition: { duration: 6, delay: d, repeat: Infinity, ease: 'easeInOut' } };
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (reduce) return undefined;
+    const id = setInterval(() => setI((n) => (n + 1) % words.length), 2600);
+    return () => clearInterval(id);
+  }, [words.length, reduce]);
+
+  return (
+    <span className="relative inline-grid h-9 min-w-[15.5rem] items-center overflow-hidden rounded-full border border-[var(--line)] bg-[var(--glass-strong)] px-4 shadow-[var(--shadow)]">
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={words[i]}
+          initial={{ y: '120%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: '-120%', opacity: 0 }}
+          transition={{ duration: 0.55, ease }}
+          className="whitespace-nowrap font-bold text-accent-ink"
+        >
+          {words[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
+const orbitTech = ['Flutter', 'React JS', 'Spring Boot', 'AWS', 'Docker', 'Java'];
+
+/** Developer-themed hero visual: 3D braces, glass orbs, code window and orbiting tech. */
+function DevScene() {
+  const reduce = useReducedMotion();
+  const fine = useFinePointer();
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const srx = useSpring(rx, { stiffness: 120, damping: 16 });
+  const sry = useSpring(ry, { stiffness: 120, damping: 16 });
+
+  const onMove = (e) => {
+    if (!fine) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 14);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 12);
+  };
+  const reset = () => {
+    rx.set(0);
+    ry.set(0);
+  };
+  const float = (delay = 0, y = 16, duration = 8) =>
+    reduce ? {} : { animate: { y: [0, -y, 0] }, transition: { duration, delay, repeat: Infinity, ease: 'easeInOut' } };
+  const sway = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          animate: { rotateY: [-24, 22, -24], rotateX: [8, -6, 8], y: [0, -12, 0] },
+          transition: { duration: 10, delay, repeat: Infinity, ease: 'easeInOut' },
+        };
 
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[420px] lg:max-w-[460px]"
-      initial={{ opacity: 0, scale: 0.94, y: 30 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.9, delay: 0.35, ease }}
+      aria-hidden="true"
+      onMouseMove={onMove}
+      onMouseLeave={reset}
+      className="relative mx-auto h-[400px] w-full max-w-[560px] sm:h-[480px] lg:h-[540px]"
+      style={{ perspective: 1100 }}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.9, delay: 0.3, ease }}
     >
-      {/* soft purple glow */}
+      {/* orbit ring with tech icons */}
       <div
-        aria-hidden="true"
-        className="absolute -inset-8 rounded-[48px] opacity-80 blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, rgba(124,92,255,.45), rgba(79,124,255,.18), transparent)' }}
-      />
-
-      <div className="gradient-border is-live glass-strong relative rounded-[40px] p-3">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-gradient-to-br from-[#e9e3ff] via-[#f3efff] to-[#dfe7ff] dark:from-[#2a2147] dark:via-[#211b36] dark:to-[#1c2340]">
-          {ok ? (
-            <img
-              src={profile.photo}
-              alt={`Portrait of ${profile.name}`}
-              className="h-full w-full object-cover object-top"
-              onError={() => setOk(false)}
-              fetchpriority="high"
-            />
-          ) : (
-            <div className="grid h-full w-full place-items-center">
-              <span className="font-display text-7xl font-bold text-gradient sm:text-8xl">{profile.initials}</span>
-            </div>
-          )}
-          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#1b1530]/25 to-transparent" />
-        </div>
+        className="absolute left-1/2 top-1/2 aspect-square w-[92%] max-w-[470px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px] border-dashed border-[var(--line)]"
+        style={reduce ? undefined : { animation: 'orbit 48s linear infinite' }}
+      >
+        <div className="absolute inset-[14%] rounded-full border border-[var(--line)]" />
+        {orbitTech.map((t, i) => {
+          const a = (i / orbitTech.length) * 360;
+          const rad = (a * Math.PI) / 180;
+          return (
+            <span
+              key={t}
+              className="absolute h-0 w-0"
+              style={{ left: `${50 + 50 * Math.sin(rad)}%`, top: `${50 - 50 * Math.cos(rad)}%` }}
+            >
+              <span
+                className="tech-tile absolute -left-5 -top-5 h-10 w-10 rounded-xl"
+                style={reduce ? undefined : { animation: 'counter-orbit 48s linear infinite' }}
+              >
+                <TechIcon name={t} size={22} />
+              </span>
+            </span>
+          );
+        })}
       </div>
 
-      {/* floating info cards — real details only */}
-      <motion.div
-        {...float(0.2)}
-        className="glass-strong absolute -left-3 top-10 flex items-center gap-3 rounded-2xl px-3.5 py-3 sm:-left-10"
-      >
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#7c5cff] to-[#4f7cff] text-white">
-          <Briefcase size={17} />
-        </span>
-        <span className="leading-tight">
-          <span className="block text-[0.7rem] font-semibold uppercase tracking-wider text-muted">Currently at</span>
-          <span className="block text-sm font-semibold text-ink">{profile.company}</span>
-        </span>
-      </motion.div>
-
-      <motion.div
-        {...float(1.2, 12)}
-        className="glass-strong absolute -right-3 top-[44%] flex items-center gap-2 rounded-2xl p-2.5 sm:-right-8"
-        aria-label="Core stack: Flutter, React JS, Spring Boot"
-      >
-        {['Flutter', 'React JS', 'Spring Boot'].map((t) => (
-          <span key={t} className="tech-tile h-10 w-10 rounded-xl" title={t}>
-            <TechIcon name={t} size={22} />
-          </span>
-        ))}
-      </motion.div>
-
-      <motion.div
-        {...float(0.7, 8)}
-        className="glass-strong absolute -bottom-5 left-6 flex items-center gap-3 rounded-2xl px-3.5 py-3 sm:left-10"
-      >
-        <span className="flex -space-x-1.5">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-[#ede8ff] text-[#5132e0] ring-2 ring-white dark:ring-[#241e36]">
-            <Smartphone size={15} />
-          </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-[#e3ebff] text-[#2f5be0] ring-2 ring-white dark:ring-[#241e36]">
-            <Code2 size={15} />
-          </span>
-        </span>
-        <span className="text-sm font-semibold text-ink">Mobile &amp; Web Development</span>
-      </motion.div>
-
+      {/* orbs + geometry */}
       <motion.span
-        aria-hidden="true"
-        className="absolute -top-4 right-10 grid h-11 w-11 place-items-center rounded-2xl bg-white/80 text-[#6d4aff] shadow-lg dark:bg-white/10 dark:text-[#bba9ff]"
-        {...(reduce ? {} : { animate: { rotate: [0, 12, 0], y: [0, -6, 0] }, transition: { duration: 7, repeat: Infinity } })}
-      >
-        <Sparkles size={20} />
+        {...float(0, 16, 9)}
+        className="absolute right-[4%] top-[2%] h-40 w-40 rounded-full sm:h-48 sm:w-48"
+        style={{
+          background:
+            'radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0 7%, transparent 28%), radial-gradient(circle at 70% 78%, rgba(122,184,255,.7), transparent 58%), radial-gradient(circle, #b9a8ff, #7666f5 72%)',
+          boxShadow: 'inset -14px -18px 36px rgba(60,40,170,.4), 0 40px 70px -28px #7666f5',
+        }}
+      />
+      <motion.span
+        {...float(1, 14, 7)}
+        className="absolute bottom-[10%] left-[2%] h-20 w-20 rounded-full border border-white/60 backdrop-blur-md"
+        style={{
+          background: 'radial-gradient(circle at 30% 26%, rgba(255,255,255,.9) 0 6%, transparent 24%), rgba(255,255,255,.18)',
+          boxShadow: 'inset 0 0 26px rgba(255,255,255,.4), 0 20px 40px -18px #7666f5',
+        }}
+      />
+      <motion.span
+        {...float(0.5, 10, 6)}
+        className="absolute left-[44%] top-0 h-8 w-8 rounded-full"
+        style={{ background: 'radial-gradient(circle at 30% 30%, #fff 0 10%, #7ab8ff 60%, #4d7fe0)' }}
+      />
+      <motion.span
+        className="absolute bottom-[16%] right-[16%] h-12 w-12 rounded-xl border-2 border-accent"
+        style={{ boxShadow: '0 0 22px -2px var(--accent), inset 0 0 18px -6px var(--accent)' }}
+        animate={reduce ? { rotate: 45 } : { rotate: [45, 405] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+      />
+      <motion.span
+        {...float(2, 12, 8)}
+        className="absolute left-[12%] top-[16%] h-7 w-7 bg-gradient-to-br from-[#7ab8ff] to-[#7666f5] opacity-85"
+        style={{ clipPath: 'polygon(50% 0, 100% 100%, 0 100%)' }}
+      />
+
+      {/* 3D braces */}
+      <motion.span {...sway(0)} className="brace absolute -left-[2%] top-[8%] text-[130px] sm:text-[170px] lg:text-[200px]">
+        {'{'}
       </motion.span>
+      <motion.span {...sway(-5)} className="brace absolute -right-[1%] bottom-[2%] text-[130px] sm:text-[170px] lg:text-[200px]">
+        {'}'}
+      </motion.span>
+
+      {/* code window */}
+      <motion.div
+        style={{ rotateX: srx, rotateY: sry, background: 'var(--code-bg)' }}
+        className="absolute left-1/2 top-1/2 w-[88%] max-w-[400px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[22px] border border-[var(--glass-border)] shadow-[var(--shadow-lg)] backdrop-blur-xl"
+      >
+        <div className="flex items-center gap-2 border-b border-[var(--line)] px-4 py-3">
+          <i className="h-[11px] w-[11px] rounded-full bg-[#ff6b81]" />
+          <i className="h-[11px] w-[11px] rounded-full bg-[#ffc857]" />
+          <i className="h-[11px] w-[11px] rounded-full bg-[#4fd1a1]" />
+          <span className="ml-2 font-mono text-xs text-muted">developer.dart</span>
+        </div>
+        <pre className="overflow-x-auto px-[18px] pb-[18px] pt-4 font-mono text-[0.66rem] leading-[1.75] text-ink sm:text-[0.8rem]">
+          <span className="code-k">class</span> <span className="code-t">Developer</span> {'{'}
+          {'\n  '}<span className="code-k">final</span> name    = <span className="code-s">'Narmitha V'</span>;
+          {'\n  '}<span className="code-k">final</span> role    = <span className="code-s">'Software Developer'</span>;
+          {'\n  '}<span className="code-k">final</span> company = <span className="code-s">'Nexzware Technologies'</span>;
+          {'\n\n  '}<span className="code-k">final</span> stack = [<span className="code-s">'Flutter'</span>, <span className="code-s">'React'</span>,
+          {'\n                 '}<span className="code-s">'Spring Boot'</span>, <span className="code-s">'AWS'</span>];
+          {'\n\n  '}<span className="code-t">String</span> <span className="code-k">get</span> <span className="code-f">focus</span> =&gt;{' '}
+          <span className="code-s">'Mobile · Web · Cloud'</span>;{'\n}'}
+        </pre>
+      </motion.div>
+
+      {/* floating info badges */}
+      <motion.div {...float(0.3, 10, 7)} className="glass absolute bottom-[12%] left-0 z-10 hidden items-center gap-2.5 rounded-2xl px-3.5 py-2.5 sm:flex">
+        <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#7666f5] to-[#7ab8ff] font-mono text-xs text-white">&lt;/&gt;</span>
+        <span className="leading-tight">
+          <span className="block text-[0.68rem] font-semibold uppercase tracking-wider text-muted">Building</span>
+          <span className="block text-sm font-bold text-ink">Mobile &amp; Web Apps</span>
+        </span>
+      </motion.div>
+      <motion.div {...float(1.4, 10, 8)} className="glass absolute right-0 top-[12%] z-10 hidden items-center gap-2.5 rounded-2xl px-3.5 py-2.5 sm:flex">
+        <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#7666f5] to-[#7ab8ff] font-mono text-xs text-white">{'{ }'}</span>
+        <span className="leading-tight">
+          <span className="block text-[0.68rem] font-semibold uppercase tracking-wider text-muted">Since</span>
+          <span className="block text-sm font-bold text-ink">{profile.since}</span>
+        </span>
+      </motion.div>
     </motion.div>
   );
 }
@@ -146,57 +233,58 @@ export default function Hero() {
   });
 
   return (
-    <section id="home" aria-label="Introduction" className="relative overflow-hidden pb-20 pt-32 sm:pt-36 lg:pb-28 lg:pt-40">
-      <HeroShapes />
-      <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
-        <div className="relative z-10 text-center lg:text-left">
-          <motion.p {...item(0.1)} className="eyebrow justify-center lg:justify-start">
-            Hello, welcome
-          </motion.p>
+    <section id="home" aria-label="Introduction" className="relative overflow-hidden pb-16 pt-32 sm:pt-36 lg:pb-24 lg:pt-36">
+      <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
+        <div className="relative z-10 min-w-0">
+          <motion.span {...item(0.1)} className="glass inline-flex items-center gap-2.5 rounded-full py-1.5 pl-2 pr-4 text-sm font-semibold text-ink">
+            <span className="relative grid h-5 w-5 place-items-center rounded-full bg-emerald-500/15">
+              <span className="absolute h-2 w-2 rounded-full bg-emerald-500 opacity-60 motion-safe:animate-ping" />
+              <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            {profile.role} at {profile.company}
+          </motion.span>
 
-          <motion.h1
-            {...item(0.2)}
-            className="mt-5 text-[2.6rem] font-extrabold leading-[1.05] text-ink sm:text-6xl lg:text-[4.4rem]"
-          >
+          <motion.h1 {...item(0.2)} className="mt-6 text-[2.6rem] font-extrabold leading-[1.05] tracking-[-0.04em] text-ink sm:text-6xl lg:text-[4.4rem]">
             Hi, I&apos;m <span className="text-gradient">{profile.name}</span>
           </motion.h1>
 
-          <motion.p {...item(0.32)} className="mt-4 min-h-[1.4em] font-display text-xl font-semibold sm:text-2xl lg:text-[1.9rem]">
+          <motion.p {...item(0.32)} className="mt-4 min-h-[1.4em] font-display text-xl font-semibold sm:text-2xl lg:text-[1.85rem]">
             <TypedRole text={profile.role} />
           </motion.p>
 
-          <motion.p {...item(0.44)} className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg lg:mx-0">
+          <motion.p {...item(0.44)} className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             {profile.tagline}
           </motion.p>
 
-          <motion.div {...item(0.56)} className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+          <motion.div {...item(0.5)} className="mt-5 flex flex-wrap items-center gap-2.5 text-sm text-muted">
+            <span>Focused on</span>
+            <Rotator words={highlights} />
+          </motion.div>
+
+          <motion.div {...item(0.58)} className="mt-8 flex flex-col gap-3 sm:flex-row">
             <MagneticButton href="#projects" className="btn btn-primary w-full sm:w-auto">
-              View My Projects <ArrowRight size={17} />
+              View My Work <ArrowRight size={17} />
             </MagneticButton>
             <MagneticButton href={profile.resume} download className="btn btn-ghost w-full sm:w-auto">
               Download Resume <Download size={17} />
             </MagneticButton>
           </motion.div>
 
-          <motion.div {...item(0.68)} className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+          <motion.div {...item(0.68)} className="mt-8 flex flex-wrap items-center gap-3">
             <a href={profile.linkedin} target="_blank" rel="noreferrer" className="icon-btn" aria-label="LinkedIn profile">
               <Linkedin size={19} />
             </a>
             <a href={profile.github} target="_blank" rel="noreferrer" className="icon-btn" aria-label="GitHub profile">
               <Github size={19} />
             </a>
-            <a href={`mailto:${profile.email}`} className="icon-btn" aria-label={`Email ${profile.email}`}>
-              <Mail size={19} />
-            </a>
-            <span className="mx-1 hidden h-6 w-px bg-[var(--line)] sm:block" aria-hidden="true" />
-            <span className="flex items-center gap-1.5 text-sm text-muted">
-              <MapPin size={16} className="text-accent-ink" /> {profile.location}
+            <span className="ml-1 flex items-center gap-1.5 text-sm text-muted">
+              <MapPin size={16} className="text-accent-ink" aria-hidden="true" /> {profile.location}
             </span>
           </motion.div>
         </div>
 
-        <div className="relative z-10 px-4 sm:px-8 lg:px-0">
-          <PhotoCard />
+        <div className="relative min-w-0">
+          <DevScene />
         </div>
       </div>
     </section>

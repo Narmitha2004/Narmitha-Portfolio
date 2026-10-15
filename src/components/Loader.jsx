@@ -13,7 +13,7 @@ export default function Loader() {
       <div className="relative grid place-items-center">
         <motion.div
           className="absolute h-28 w-28 rounded-full"
-          style={{ background: 'conic-gradient(from 0deg, transparent, #7c5cff, #4f7cff, transparent 70%)' }}
+          style={{ background: 'conic-gradient(from 0deg, transparent, #7666f5, #7ab8ff, transparent 70%)' }}
           animate={{ rotate: 360 }}
           transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
         />

@@ -41,7 +41,7 @@ export default function Navbar({ theme, onToggleTheme }) {
         }`}
       >
         <a href="#home" className="flex items-center gap-3 rounded-xl" aria-label={`${profile.name} — home`}>
-          <span className="grid h-10 w-10 place-items-center rounded-[13px] bg-gradient-to-br from-[#7c5cff] to-[#4f7cff] font-display text-sm font-bold text-white shadow-[0_8px_20px_-8px_rgba(109,74,255,.8)]">
+          <span className="grid h-10 w-10 place-items-center rounded-[13px] bg-gradient-to-br from-[#7666f5] to-[#7ab8ff] font-display text-sm font-bold text-white shadow-[0_8px_20px_-8px_rgba(109,74,255,.8)]">
             {profile.initials}
           </span>
           <span className="hidden leading-tight sm:block">

@@ -11,10 +11,10 @@ function Education() {
         <article className="gradient-border glass relative h-full overflow-hidden rounded-[28px] p-6 sm:p-8">
           <div
             aria-hidden="true"
-            className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br from-[#7c5cff]/25 to-[#4f7cff]/10 blur-2xl"
+            className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br from-[#7666f5]/25 to-[#7ab8ff]/10 blur-2xl"
           />
           <div className="relative flex items-start gap-4">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#7c5cff] to-[#4f7cff] text-white shadow-[0_10px_30px_-8px_rgba(109,74,255,.7)]">
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#7666f5] to-[#7ab8ff] text-white shadow-[0_10px_30px_-8px_rgba(109,74,255,.7)]">
               <GraduationCap size={26} aria-hidden="true" />
             </span>
             <div>
@@ -53,7 +53,7 @@ function Research() {
           <div aria-hidden="true" className="dot-grid absolute inset-0 opacity-0 dark:opacity-20" />
           <div
             aria-hidden="true"
-            className="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-gradient-to-tr from-[#4f7cff]/25 to-[#c084fc]/15 blur-2xl"
+            className="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-gradient-to-tr from-[#7ab8ff]/25 to-[#c084fc]/15 blur-2xl"
           />
           <div className="relative flex items-center gap-3">
             <span className="grid h-14 w-14 place-items-center rounded-2xl bg-accent-soft text-accent-ink">

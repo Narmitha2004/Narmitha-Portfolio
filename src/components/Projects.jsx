@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, CheckCircle2, ExternalLink, Github, Layers } from 'lucide-react';
+import { CheckCircle2, ChevronDown, ExternalLink, Github, Layers } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import SectionHeading from './ui/SectionHeading';
 import Reveal from './ui/Reveal';
 import TiltCard from './ui/TiltCard';
 import TechIcon from './ui/TechIcon';
-import Modal from './ui/Modal';
 
 /** Real screenshot if provided, otherwise an abstract branded cover (never a fake screenshot). */
 function Preview({ project, tall = false }) {
@@ -67,7 +66,7 @@ function ProjectLinks({ project, size = 'sm' }) {
 export default function Projects() {
   const categories = useMemo(() => ['All', ...new Set(projects.map((p) => p.category))], []);
   const [filter, setFilter] = useState('All');
-  const [selected, setSelected] = useState(null);
+  const [openId, setOpenId] = useState(null);
   const shown = filter === 'All' ? projects : projects.filter((p) => p.category === filter);
 
   return (
@@ -90,7 +89,7 @@ export default function Projects() {
                     {filter === c && (
                       <motion.span
                         layoutId="project-tab"
-                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[#6d4aff] to-[#4f7cff]"
+                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7666f5] to-[#7ab8ff]"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -118,7 +117,7 @@ export default function Projects() {
                   <Preview project={p} />
                   <div className="flex flex-1 flex-col px-3 pb-3 pt-5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="chip">{p.category}</span>
+                      <span className="chip">{p.label ?? p.category}</span>
                       <span className="font-display text-sm font-semibold text-subtle">Project {p.number}</span>
                     </div>
                     <h3 className="mt-4 text-xl font-bold leading-snug text-ink">{p.title}</h3>
@@ -133,9 +132,36 @@ export default function Projects() {
                         </li>
                       ))}
                     </ul>
+                    <AnimatePresence initial={false}>
+                      {openId === p.id && (
+                        <motion.div
+                          id={`details-${p.id}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <p className="pt-5 font-mono text-xs uppercase tracking-wider text-muted">Key features</p>
+                          <ul className="mt-2.5 grid gap-2">
+                            {p.features.map((f) => (
+                              <li key={f} className="flex items-start gap-2.5 text-[0.93rem] text-ink">
+                                <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-accent-ink" aria-hidden="true" /> {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                     <div className="mt-auto flex flex-wrap gap-2 pt-6">
-                      <button onClick={() => setSelected(p)} className="btn btn-primary !min-h-[42px] !px-4 text-sm">
-                        View Details <ArrowUpRight size={16} />
+                      <button
+                        onClick={() => setOpenId(openId === p.id ? null : p.id)}
+                        aria-expanded={openId === p.id}
+                        aria-controls={`details-${p.id}`}
+                        className="btn btn-primary !min-h-[42px] !px-4 text-sm"
+                      >
+                        {openId === p.id ? 'Hide Details' : 'View Details'}
+                        <ChevronDown size={16} className={`transition-transform duration-300 ${openId === p.id ? 'rotate-180' : ''}`} />
                       </button>
                       <ProjectLinks project={p} />
                     </div>
@@ -147,52 +173,6 @@ export default function Projects() {
         </motion.ul>
       </div>
 
-      <Modal open={!!selected} onClose={() => setSelected(null)} labelledBy="project-modal-title" maxWidth="max-w-3xl">
-        {selected && (
-          <div className="p-4 sm:p-6">
-            <div className="group">
-              <Preview project={selected} tall />
-            </div>
-            <div className="px-1 pb-2 pt-6 sm:px-3">
-              <span className="chip">{selected.category}</span>
-              <h3 id="project-modal-title" className="mt-3 pr-10 text-2xl font-bold text-ink sm:text-3xl">
-                {selected.title}
-              </h3>
-              <p className="mt-4 leading-relaxed text-muted">{selected.description}</p>
-
-              <h4 className="mt-7 text-sm font-bold uppercase tracking-wider text-ink">Key features</h4>
-              <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
-                {selected.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-ink">
-                    <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-accent-ink" aria-hidden="true" /> {f}
-                  </li>
-                ))}
-              </ul>
-
-              <h4 className="mt-7 text-sm font-bold uppercase tracking-wider text-ink">Tech stack</h4>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {selected.tech.map((t) => (
-                  <li
-                    key={t}
-                    className="flex items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--glass)] py-1.5 pl-1.5 pr-3 text-sm font-medium text-ink"
-                  >
-                    <span className="tech-tile h-7 w-7 rounded-lg !shadow-none">
-                      <TechIcon name={t} size={16} />
-                    </span>
-                    {t}
-                  </li>
-                ))}
-              </ul>
-
-              {(selected.github || selected.demo) && (
-                <div className="mt-8 flex flex-wrap gap-2">
-                  <ProjectLinks project={selected} size="md" />
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </Modal>
     </section>
   );
 }

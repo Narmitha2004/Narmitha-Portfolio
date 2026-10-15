@@ -14,13 +14,13 @@ export default function Experience() {
           {/* timeline rail */}
           <span
             aria-hidden="true"
-            className="absolute bottom-2 left-[19px] top-2 w-[2px] rounded-full bg-gradient-to-b from-[#7c5cff] via-[#4f7cff]/50 to-transparent sm:left-[23px]"
+            className="absolute bottom-2 left-[19px] top-2 w-[2px] rounded-full bg-gradient-to-b from-[#7666f5] via-[#7ab8ff]/50 to-transparent sm:left-[23px]"
           />
           {experience.map((job, idx) => (
             <li key={job.role + job.company} className="relative pl-14 sm:pl-20">
               <span
                 aria-hidden="true"
-                className="absolute left-0 top-6 grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#7c5cff] to-[#4f7cff] text-white shadow-[0_10px_30px_-8px_rgba(109,74,255,.7)] sm:h-12 sm:w-12"
+                className="absolute left-0 top-6 grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#7666f5] to-[#7ab8ff] text-white shadow-[0_10px_30px_-8px_rgba(109,74,255,.7)] sm:h-12 sm:w-12"
               >
                 <Building2 size={20} />
               </span>

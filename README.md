@@ -1,7 +1,7 @@
 # Narmitha V — Developer Portfolio
 
 React + Vite + Tailwind CSS v4 + Framer Motion + Lucide icons.
-Soft lavender glassmorphism design with light/dark themes.
+Soft lavender glassmorphism design with light/dark themes and a developer-themed hero (no photo needed).
 
 ## Run it
 
@@ -17,7 +17,6 @@ Requires Node.js 18+.
 
 | File | Used for |
 |------|----------|
-| `public/profile.jpg` | Hero photo (portrait, ~900×1100). Until added, an "NV" monogram shows. |
 | `public/Narmitha_V_Resume.pdf` | "Download Resume" button |
 | `public/projects/*.png` (optional) | Real project screenshots → set `image` in `src/data/portfolio.js` |
 | `public/certificates/*.jpg|pdf` (optional) | Certificate files → set `image` to enable the preview modal |
@@ -52,7 +51,15 @@ Vercel or Netlify: import the repo, build command `npm run build`, output folder
 
 ## Notes
 
-- 3D shapes are CSS-rendered (gradient-lit spheres, rings, cubes) instead of WebGL,
-  which keeps the page fast on phones. React Three Fiber can be added later if wanted.
+- The hero's 3D braces, orbs, orbiting tech icons and code window are CSS + Framer Motion
+  rather than WebGL, so the page stays fast on phones. React Three Fiber can be added later.
+- Background particles and the cursor glow live in `src/components/Ambient.jsx`.
 - Respects `prefers-reduced-motion`; tilt and magnetic effects are off on touch screens.
-- Technology icons load from the open-source Devicon CDN, with an icon fallback.
+- Technology logos are embedded as SVG in `src/data/techLogos.js` (Simple Icons, Font Awesome Free,
+  Material Design Icons), so no image files or outside links are needed.
+
+## No-install version
+
+`standalone/index.html` is the same portfolio as a single HTML file (no build step).
+Open it in a browser, or upload it to GitHub Pages / Netlify Drop to host it.
+It has no mail service, so its form gives visitors a copy of their message to email you.

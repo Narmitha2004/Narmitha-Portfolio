@@ -1,25 +1,25 @@
 import { useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { Award, BadgeCheck, Eye } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Award, BadgeCheck, ChevronDown, Eye } from 'lucide-react';
 import { certifications } from '../data/portfolio';
 import SectionHeading from './ui/SectionHeading';
 import Modal from './ui/Modal';
 import { SectionShapes } from './FloatingShapes';
 
 function CertCard({ cert, index, onPreview }) {
-  const reduce = useReducedMotion();
+  const [open, setOpen] = useState(false);
+  const detailsId = `cert-details-${index}`;
   return (
     <motion.li
+      className="flex"
       initial={{ opacity: 0, y: 26 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.6, delay: (index % 3) * 0.08 }}
     >
       <motion.article
-        animate={reduce ? undefined : { y: [0, -4, 0] }}
-        transition={{ duration: 6, delay: index * 0.5, repeat: Infinity, ease: 'easeInOut' }}
         whileHover={{ y: -8 }}
-        className="gradient-border glass relative flex h-full flex-col overflow-hidden rounded-[26px] p-6"
+        className="gradient-border glass relative flex h-full flex-col overflow-hidden rounded-[26px] p-6 transition-shadow hover:shadow-[var(--shadow-lg)]"
       >
         {/* certificate corner ornament */}
         <div aria-hidden="true" className={`absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-to-br ${cert.hue} opacity-15 blur-xl`} />
@@ -27,7 +27,7 @@ function CertCard({ cert, index, onPreview }) {
 
         <div className="relative flex items-start justify-between gap-3">
           <span
-            className={`grid h-12 min-w-12 place-items-center rounded-2xl bg-gradient-to-br ${cert.hue} px-2 font-display text-sm font-bold text-white shadow-lg`}
+            className={`grid h-12 min-w-12 place-items-center rounded-2xl bg-gradient-to-br ${cert.hue} px-2.5 font-mono text-xs font-medium text-white shadow-lg`}
             aria-hidden="true"
           >
             {cert.mark}
@@ -43,20 +43,49 @@ function CertCard({ cert, index, onPreview }) {
           </p>
         )}
 
-        {(cert.image || cert.verifyUrl) && (
-          <div className="relative mt-auto flex flex-wrap gap-2 pt-6">
-            {cert.image && (
-              <button onClick={() => onPreview(cert)} className="btn btn-ghost !min-h-[40px] !px-4 text-sm">
-                <Eye size={16} /> Preview
-              </button>
-            )}
-            {cert.verifyUrl && (
-              <a href={cert.verifyUrl} target="_blank" rel="noreferrer" className="btn btn-primary !min-h-[40px] !px-4 text-sm">
-                <BadgeCheck size={16} /> Verify Credential
-              </a>
-            )}
-          </div>
-        )}
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.dl
+              id={detailsId}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="relative grid gap-2 overflow-hidden text-sm"
+            >
+              <div className="pt-3">
+                <dt className="font-mono text-[0.7rem] uppercase tracking-wider text-muted">Issued by</dt>
+                <dd className="text-ink">{cert.org}</dd>
+              </div>
+              <div>
+                <dt className="font-mono text-[0.7rem] uppercase tracking-wider text-muted">Area</dt>
+                <dd className="text-ink">{cert.area}</dd>
+              </div>
+            </motion.dl>
+          )}
+        </AnimatePresence>
+
+        <div className="relative mt-auto flex flex-wrap gap-2 pt-5">
+          <button
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-controls={detailsId}
+            className="btn btn-ghost !min-h-[40px] !px-4 text-sm"
+          >
+            {open ? 'Hide Details' : 'Details'}
+            <ChevronDown size={16} className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+          </button>
+          {cert.image && (
+            <button onClick={() => onPreview(cert)} className="btn btn-ghost !min-h-[40px] !px-4 text-sm">
+              <Eye size={16} /> Preview
+            </button>
+          )}
+          {cert.verifyUrl && (
+            <a href={cert.verifyUrl} target="_blank" rel="noreferrer" className="btn btn-primary !min-h-[40px] !px-4 text-sm">
+              <BadgeCheck size={16} /> Verify Credential
+            </a>
+          )}
+        </div>
       </motion.article>
     </motion.li>
   );

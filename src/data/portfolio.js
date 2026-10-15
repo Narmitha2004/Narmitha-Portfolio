@@ -22,7 +22,7 @@ import {
 export const profile = {
   name: 'Narmitha V',
   initials: 'NV',
-  role: 'Associate Software Developer',
+  role: 'Software Developer',
   company: 'Nexzware Technologies',
   since: 'August 2026',
   location: 'Dharmapuri, Tamil Nadu, India',
@@ -32,9 +32,7 @@ export const profile = {
   showPhone: false, // set to true to show the phone number in the Contact section
   linkedin: 'https://www.linkedin.com/in/narmitha-v-8380b5262',
   github: 'https://github.com/Narmitha2004',
-  tagline: 'Building Modern Mobile Apps, Scalable Web Applications & Digital Experiences.',
-  // Put your photo at public/profile.jpg (portrait, ~900×1100 works best)
-  photo: '/profile.jpg',
+  tagline: 'Building Modern Mobile Applications, Scalable Websites & Seamless Digital Experiences.',
   // Put your resume at public/Narmitha_V_Resume.pdf
   resume: '/Narmitha_V_Resume.pdf',
 };
@@ -47,31 +45,35 @@ export const navLinks = [
   { id: 'projects', label: 'Projects' },
   { id: 'certifications', label: 'Certifications' },
   { id: 'education', label: 'Education' },
-  { id: 'publication', label: 'Research' },
   { id: 'contact', label: 'Contact' },
 ];
 
 export const about =
-  "I'm Narmitha V, an Associate Software Developer at Nexzware Technologies since August 2026. I work on developing mobile applications and websites, combining frontend development, backend integration, and practical problem-solving to create user-friendly digital solutions.";
+  "I'm Narmitha V, a Software Developer at Nexzware Technologies since August 2026. I develop mobile applications and websites, working with modern technologies to build responsive interfaces, integrate backend services, and deliver practical software solutions.";
+
+/** Rotating highlight words in the hero */
+export const highlights = ['Mobile App Development', 'Full Stack Development', 'Cloud Technologies', 'Software Engineering'];
 
 export const focusAreas = [
-  { icon: Smartphone, title: 'Mobile Apps', stack: 'Flutter · Dart' },
-  { icon: LayoutTemplate, title: 'Web Apps', stack: 'React JS · Spring Boot' },
-  { icon: Cloud, title: 'Cloud', stack: 'AWS · Docker' },
+  { icon: Smartphone, title: 'Mobile App Development', stack: 'Flutter · Dart' },
+  { icon: LayoutTemplate, title: 'Full Stack Development', stack: 'React JS · Spring Boot' },
+  { icon: Cloud, title: 'Cloud Technologies', stack: 'AWS · Docker' },
+  { icon: Code2, title: 'Software Engineering', stack: 'Java · Git · REST APIs' },
 ];
 
 export const experience = [
   {
-    role: 'Associate Software Developer',
+    role: 'Software Developer',
     company: 'Nexzware Technologies',
     period: 'August 2026 – Present',
     current: true,
     responsibilities: [
       'Developing mobile applications and websites.',
-      'Building responsive and user-friendly interfaces.',
-      'Working with frontend and backend technologies.',
-      'Integrating APIs and connecting application components.',
-      'Collaborating on application development and improvements.',
+      'Creating responsive frontend interfaces.',
+      'Integrating frontend and backend services.',
+      'Working with REST APIs.',
+      'Implementing functional application features.',
+      'Collaborating on development and improvements.',
       'Working with modern software development tools.',
     ],
   },
@@ -82,10 +84,10 @@ export const featuredSkills = ['Flutter', 'Dart', 'Java', 'Spring Boot', 'React 
 
 export const skillCategories = [
   { id: 'languages', title: 'Programming Languages', icon: Code2, items: ['Java', 'Python', 'JavaScript', 'Dart'] },
-  { id: 'frontend', title: 'Frontend Development', icon: LayoutTemplate, items: ['HTML5', 'CSS3', 'JavaScript', 'React JS'] },
+  { id: 'frontend', title: 'Frontend Technologies', icon: LayoutTemplate, items: ['HTML5', 'CSS3', 'JavaScript', 'React JS'] },
   { id: 'mobile', title: 'Mobile App Development', icon: Smartphone, items: ['Flutter', 'Dart'] },
-  { id: 'backend', title: 'Backend Development', icon: Server, items: ['Java', 'Spring Boot', 'JSP', 'Servlet', 'REST APIs'] },
-  { id: 'databases', title: 'Databases', icon: Database, items: ['MySQL'] },
+  { id: 'backend', title: 'Backend Technologies', icon: Server, items: ['Java', 'Spring Boot', 'JSP', 'Servlet', 'REST APIs'] },
+  { id: 'databases', title: 'Database', icon: Database, items: ['MySQL'] },
   {
     id: 'cloud',
     title: 'Cloud Technologies',
@@ -109,12 +111,13 @@ export const projects = [
     number: '01',
     title: 'Digital Complaint Register Web Application',
     category: 'Web',
+    label: 'Web Application',
     icon: ClipboardList,
-    gradient: 'from-[#7c5cff] via-[#6a6bff] to-[#4f7cff]',
+    gradient: 'from-[#8c7bff] via-[#7666f5] to-[#7ab8ff]',
     tech: ['HTML', 'CSS', 'JavaScript', 'Java Servlet', 'JSP', 'MySQL'],
     description:
-      'Developed a web-based complaint management application allowing users to submit and track complaints online.',
-    features: ['User authentication', 'Online complaint submission', 'Complaint tracking', 'Admin management', 'Complaint status updates'],
+      'Developed a complaint management application that allows users to register complaints and track their progress.',
+    features: ['User authentication', 'Complaint registration', 'Complaint tracking', 'Admin management', 'Complaint status updates'],
     image: null,
     github: null,
     demo: null,
@@ -124,12 +127,13 @@ export const projects = [
     number: '02',
     title: 'Farmer Information Management System',
     category: 'Web',
+    label: 'Full Stack Web App',
     icon: Sprout,
-    gradient: 'from-[#8b5cf6] via-[#7c6cff] to-[#38bdf8]',
+    gradient: 'from-[#9b8cff] via-[#7666f5] to-[#79b8ff]',
     tech: ['React JS', 'HTML', 'CSS', 'JavaScript', 'Spring Boot', 'MySQL', 'REST APIs'],
     description:
-      'Developed a full-stack web application to manage farmer information using CRUD functionality and backend REST APIs.',
-    features: ['Farmer registration', 'Record management', 'CRUD operations', 'REST API integration', 'Persistent database storage'],
+      'Developed a full-stack farmer information management application using React JS and Spring Boot.',
+    features: ['Farmer registration', 'Farmer record management', 'CRUD functionality', 'Backend REST API integration', 'Database management'],
     image: null,
     github: null,
     demo: null,
@@ -139,12 +143,13 @@ export const projects = [
     number: '03',
     title: 'Data Lake House Project',
     category: 'Cloud',
+    label: 'Cloud Data',
     icon: Warehouse,
-    gradient: 'from-[#5b5bff] via-[#7c5cff] to-[#c084fc]',
+    gradient: 'from-[#7666f5] via-[#9b8cff] to-[#b9a8ff]',
     tech: ['AWS S3', 'Amazon Athena'],
     description:
-      'Designed and implemented a cloud-based data lakehouse architecture using Amazon S3 for dataset storage and Amazon Athena for serverless SQL querying and analysis.',
-    features: ['Cloud data storage', 'Dataset organization', 'Serverless SQL queries', 'Data analysis'],
+      'Developed a cloud-based data lakehouse solution using AWS S3 for data storage and Amazon Athena for serverless SQL analysis.',
+    features: ['Cloud dataset storage', 'Data organization', 'Serverless SQL querying', 'Data analysis'],
     image: null,
     github: null,
     demo: null,
@@ -158,12 +163,12 @@ export const projects = [
  */
 export const certifications = [
   // TODO: replace the title with the exact Oracle credential name.
-  { title: 'Oracle Certification', issuer: 'Oracle', mark: 'O', hue: 'from-[#f97066] to-[#c2410c]', detail: null, image: null, verifyUrl: null },
-  { title: 'Programming in C', issuer: 'NPTEL', mark: 'N', hue: 'from-[#7c5cff] to-[#4f7cff]', detail: null, image: null, verifyUrl: null },
-  { title: 'Leadership and Team Effectiveness', issuer: 'NPTEL', mark: 'N', hue: 'from-[#7c5cff] to-[#4f7cff]', detail: 'Score: 64%', image: null, verifyUrl: null },
-  { title: 'Agent Blazer Champion', issuer: 'Salesforce', mark: 'SF', hue: 'from-[#38bdf8] to-[#0ea5e9]', detail: null, image: null, verifyUrl: null },
-  { title: 'SQL Basics', issuer: 'SkillRack', mark: 'SR', hue: 'from-[#a78bfa] to-[#7c3aed]', detail: null, image: null, verifyUrl: null },
-  { title: 'Java', issuer: 'IIT Bombay Spoken Tutorial', mark: 'IIT', hue: 'from-[#818cf8] to-[#4338ca]', detail: null, image: null, verifyUrl: null },
+  { title: 'Oracle Certification', issuer: 'Oracle', mark: 'ORCL', hue: 'from-[#f87171] to-[#c2410c]', org: 'Oracle Corporation', area: 'Oracle technologies', detail: null, image: null, verifyUrl: null },
+  { title: 'Programming in C', issuer: 'NPTEL', mark: 'NPTEL', hue: 'from-[#9b8cff] to-[#5646de]', org: 'National Programme on Technology Enhanced Learning (IITs & IISc)', area: 'Programming', detail: null, image: null, verifyUrl: null },
+  { title: 'Leadership and Team Effectiveness', issuer: 'NPTEL', mark: 'NPTEL', hue: 'from-[#9b8cff] to-[#5646de]', org: 'National Programme on Technology Enhanced Learning (IITs & IISc)', area: 'Leadership', detail: 'Score: 64%', image: null, verifyUrl: null },
+  { title: 'Agent Blazer Champion', issuer: 'Salesforce', mark: 'SF', hue: 'from-[#7ab8ff] to-[#0b76d0]', org: 'Salesforce', area: 'AI agents on Salesforce', detail: null, image: null, verifyUrl: null },
+  { title: 'SQL Basics', issuer: 'SkillRack', mark: 'SR', hue: 'from-[#b9a8ff] to-[#7c3aed]', org: 'SkillRack', area: 'Databases / SQL', detail: null, image: null, verifyUrl: null },
+  { title: 'Java', issuer: 'IIT Bombay Spoken Tutorial', mark: 'IITB', hue: 'from-[#8fa4ff] to-[#3f4bc9]', org: 'Spoken Tutorial Project, IIT Bombay', area: 'Programming', detail: null, image: null, verifyUrl: null },
 ];
 
 export const education = {

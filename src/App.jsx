@@ -12,6 +12,7 @@ import Certifications from './components/Certifications';
 import EducationResearch from './components/EducationResearch';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import { CursorGlow, Particles } from './components/Ambient';
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -19,7 +20,7 @@ function ScrollProgress() {
   return (
     <motion.div
       aria-hidden="true"
-      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-[#7c5cff] to-[#4f7cff]"
+      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-[#7666f5] to-[#7ab8ff]"
       style={{ scaleX }}
     />
   );
@@ -43,6 +44,8 @@ export default function App() {
         Skip to content
       </a>
       <div className="bg-mesh" aria-hidden="true" />
+      <Particles />
+      <CursorGlow />
       <AnimatePresence>{loading && <Loader key="loader" />}</AnimatePresence>
       <ScrollProgress />
       <Navbar theme={theme} onToggleTheme={toggle} />

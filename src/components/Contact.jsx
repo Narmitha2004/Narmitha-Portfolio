@@ -19,7 +19,7 @@ const initial = { name: '', email: '', subject: '', message: '', botcheck: '' };
 
 function validate(v) {
   const e = {};
-  if (v.name.trim().length < 2) e.name = 'Please enter your name.';
+  if (v.name.trim().length < 2) e.name = 'Enter your full name.';
   if (!EMAIL_RE.test(v.email.trim())) e.email = 'Please enter a valid email address.';
   if (v.subject.trim().length < 3) e.subject = 'Please add a short subject.';
   if (v.message.trim().length < 10) e.message = 'Message should be at least 10 characters.';
@@ -33,13 +33,14 @@ const contactLinks = [
   ...(profile.showPhone ? [{ icon: Phone, label: 'Phone', value: profile.phone, href: profile.phoneHref }] : []),
 ];
 
+/** Floating-label wrapper: the label sits inside the input and moves up on focus / when filled. */
 function Field({ id, label, error, children }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-semibold text-ink">
-        {label}
-      </label>
-      {children}
+      <div className="fl">
+        {children}
+        <label htmlFor={id}>{label}</label>
+      </div>
       <AnimatePresence>
         {error && (
           <motion.p
@@ -47,7 +48,7 @@ function Field({ id, label, error, children }) {
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mt-1.5 flex items-center gap-1.5 text-sm text-[#c23347] dark:text-[#ff8a99]"
+            className="mt-1.5 flex items-center gap-1.5 text-sm font-semibold text-[#c2344a] dark:text-[#ff8a9b]"
           >
             <AlertCircle size={14} aria-hidden="true" /> {error}
           </motion.p>
@@ -126,14 +127,14 @@ export default function Contact() {
           <div className="relative">
             <div
               aria-hidden="true"
-              className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-gradient-to-br from-[#7c5cff]/25 to-[#4f7cff]/10 blur-3xl"
+              className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-gradient-to-br from-[#7666f5]/25 to-[#7ab8ff]/10 blur-3xl"
             />
             <div className="relative">
               <SectionHeading
                 id="contact-title"
                 eyebrow="Contact"
-                title="Have an opportunity or project in mind? Let's talk."
-                description="I'm happy to connect about roles, collaborations or app ideas. Send a message and I'll get back to you."
+                title="Let's Build Something Amazing Together"
+                description="Open to conversations about roles, collaborations and app ideas. Reach out directly or send a message."
               />
               <ul className="grid gap-3">
                 {contactLinks.map(({ icon: Icon, label, value, href, external }, i) => (
@@ -143,7 +144,7 @@ export default function Contact() {
                       {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
                       className="group flex min-h-[64px] items-center gap-4 rounded-2xl border border-[var(--line)] bg-[var(--glass)] p-3 pr-4 transition-all hover:-translate-y-0.5 hover:border-[var(--accent)]"
                     >
-                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#7c5cff] to-[#4f7cff] text-white">
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#7666f5] to-[#7ab8ff] text-white">
                         <Icon size={19} aria-hidden="true" />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -171,18 +172,18 @@ export default function Contact() {
               <input type="text" name="botcheck" value={values.botcheck} onChange={onChange} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
               <div className="grid gap-5 sm:grid-cols-2">
-                <Field id="name" label="Name" error={errors.name}>
-                  <input {...fieldProps('name')} type="text" autoComplete="name" placeholder="Your name" maxLength={80} />
+                <Field id="name" label="Full Name" error={errors.name}>
+                  <input {...fieldProps('name')} type="text" autoComplete="name" placeholder=" " maxLength={80} />
                 </Field>
-                <Field id="email" label="Email" error={errors.email}>
-                  <input {...fieldProps('email')} type="email" autoComplete="email" placeholder="you@example.com" maxLength={120} />
+                <Field id="email" label="Email Address" error={errors.email}>
+                  <input {...fieldProps('email')} type="email" autoComplete="email" placeholder=" " maxLength={120} />
                 </Field>
               </div>
               <Field id="subject" label="Subject" error={errors.subject}>
-                <input {...fieldProps('subject')} type="text" placeholder="What's this about?" maxLength={120} />
+                <input {...fieldProps('subject')} type="text" placeholder=" " maxLength={120} />
               </Field>
               <Field id="message" label="Message" error={errors.message}>
-                <textarea {...fieldProps('message')} rows={5} placeholder="Write your message…" maxLength={3000} className="field resize-y" />
+                <textarea {...fieldProps('message')} rows={5} placeholder=" " maxLength={3000} className="field min-h-[150px] resize-y" />
               </Field>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

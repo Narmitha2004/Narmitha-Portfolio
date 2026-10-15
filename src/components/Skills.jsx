@@ -72,7 +72,7 @@ export default function Skills() {
                   {active && (
                     <motion.span
                       layoutId="skill-tab"
-                      className="absolute inset-0 rounded-full bg-gradient-to-r from-[#6d4aff] to-[#4f7cff]"
+                      className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7666f5] to-[#7ab8ff]"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -112,7 +112,7 @@ export default function Skills() {
                           whileHover={{ y: -3 }}
                           className={`flex items-center gap-2 rounded-xl border py-1.5 pl-1.5 pr-3 text-sm font-medium ${
                             featured
-                              ? 'border-[#7c5cff]/35 bg-gradient-to-r from-[#7c5cff]/12 to-[#4f7cff]/10 text-ink'
+                              ? 'border-[#7666f5]/35 bg-gradient-to-r from-[#7666f5]/12 to-[#7ab8ff]/10 text-ink'
                               : 'border-[var(--line)] bg-[var(--glass-strong)] text-ink'
                           }`}
                         >

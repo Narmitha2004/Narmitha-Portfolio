@@ -12,7 +12,7 @@ export default function About() {
     <section id="about" aria-labelledby="about-title" className="relative py-20 lg:py-28">
       <SectionShapes variant="a" />
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading id="about-title" eyebrow="About me" title="Developer focused on clean, usable products" />
+        <SectionHeading id="about-title" eyebrow="About me" title="Building practical software, end to end" />
 
         {/* Bento grid */}
         <div className="grid auto-rows-auto grid-cols-1 gap-4 md:grid-cols-6 lg:gap-5">
@@ -33,7 +33,7 @@ export default function About() {
 
           <Reveal delay={0.08} className="md:col-span-2">
             <div className={tile}>
-              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#7c5cff] to-[#4f7cff] text-white">
+              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#7666f5] to-[#7ab8ff] text-white">
                 <Briefcase size={20} />
               </span>
               <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-muted">Currently</p>
@@ -57,7 +57,7 @@ export default function About() {
           <Reveal delay={0.1} className="md:col-span-4">
             <div className={tile}>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted">What I build</p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 {focusAreas.map(({ icon: Icon, title, stack }) => (
                   <motion.div
                     key={title}
